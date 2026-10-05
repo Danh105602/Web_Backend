@@ -14,6 +14,7 @@ pipeline {
             steps {
                 echo '=== DOTNET RESTORE ==='
                 bat '''
+                    dotnet tool restore
                     cd Server
                     dotnet restore ShoesStoreApp.Server.sln
                 '''
@@ -34,10 +35,10 @@ pipeline {
             steps {
                 echo '=== DATABASE MIGRATION ==='
                 bat '''
-                    cd Server
-                    dotnet ef database update ^
-                        --project .\\ShoesStoreApp.DAL ^
-                        --startup-project .\\ShoesStoreApp.PLA
+                    dotnet tool restore
+                    dotnet tool run dotnet-ef database update ^
+                        --project .\\Server\\ShoesStoreApp.DAL ^
+                        --startup-project .\\Server\\ShoesStoreApp.PLA
                 '''
             }
         }
@@ -65,7 +66,7 @@ pipeline {
             echo '=== CI/CD FAILED ==='
         }
 
-        always {
+        success {
             archiveArtifacts artifacts: 'publish/**',
                              fingerprint: true,
                              allowEmptyArchive: false
