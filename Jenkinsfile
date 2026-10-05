@@ -31,18 +31,6 @@ pipeline {
             }
         }
 
-        stage('Database Migration') {
-            steps {
-                echo '=== DATABASE MIGRATION ==='
-                bat '''
-                    dotnet tool restore
-                    dotnet tool run dotnet-ef database update ^
-                        --project .\\Server\\ShoesStoreApp.DAL ^
-                        --startup-project .\\Server\\ShoesStoreApp.PLA
-                '''
-            }
-        }
-
         stage('Publish') {
             steps {
                 echo '=== DOTNET PUBLISH ==='
