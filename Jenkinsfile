@@ -1,3 +1,4 @@
+```groovy
 pipeline {
     agent any
 
@@ -60,16 +61,15 @@ pipeline {
         success {
             echo '=== CI/CD SUCCESS ==='
             echo 'Backend published successfully.'
+
+            archiveArtifacts artifacts: 'publish/**',
+                             fingerprint: true,
+                             allowEmptyArchive: false
         }
 
         failure {
             echo '=== CI/CD FAILED ==='
         }
-
-        success {
-            archiveArtifacts artifacts: 'publish/**',
-                             fingerprint: true,
-                             allowEmptyArchive: false
-        }
     }
 }
+```
